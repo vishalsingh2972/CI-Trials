@@ -29,3 +29,20 @@ jobs:
 
     - name: Verify Pushed Image
       run: docker pull vishalsingh2972/week-18-ci-cd:latest  # Replace with your Docker Hub username and repository
+
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          sudo docker pull vishalsingh2972/week-18-ci-cd:latest
+          sudo docker stop web-app || true                       
+          sudo docker rm web-app || true                           
+          sudo docker run -d --name web-app --restart always -p 3005:3000 vishalsingh2972/week-18-ci-cd:latest 
+
+        #// pull the latest image from docker hub
+        #// stop the web-app exisitng container (if any)
+        #// remove the web-app exisitng container (if any)
+        #// start a new web-app container but now within the ec2 instance , here need to add db creds
