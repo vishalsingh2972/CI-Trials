@@ -8,6 +8,9 @@ COPY package.json package-lock.json turbo.json tsconfig.json ./
 # Install dependencies early to cache them if they haven't changed
 RUN npm install
 
+# Debug: check that Next.js is installed
+RUN npm ls next
+
 # Copy the rest of the application code
 COPY apps ./apps
 COPY packages ./packages
