@@ -30,7 +30,7 @@ jobs:
     - name: Verify Pushed Image
       run: docker pull vishalsingh2972/week-18-ci-cd:latest  # Replace with your Docker Hub username and repository
 
-    - name: Deploy to EC2
+    - name: Deploy to EC2 # instead  of this step "Deploy to EC2" we can also do elastic beanstalk (good for autoscaling applications)
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
@@ -46,3 +46,4 @@ jobs:
         #// stop the web-app exisitng container (if any)
         #// remove the web-app exisitng container (if any)
         #// start a new web-app container but now within the ec2 instance , here need to add db creds
+
