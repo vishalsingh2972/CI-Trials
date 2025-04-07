@@ -14,8 +14,5 @@ RUN npm ls next
 # Generate Prisma client
 RUN npm run db:generate
 
-# Build only the user app (optional: filter here)
-RUN npm run build:user
-
 # Start the user app
 CMD ["npm", "run", "start-user-app"]
