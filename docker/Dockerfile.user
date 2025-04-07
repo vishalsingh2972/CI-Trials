@@ -1,18 +1,20 @@
-FROM node:20.12.0-slim
+FROM node:20.12.0-alpine3.19
 
 WORKDIR /usr/src/app
 
-# Copy entire monorepo, not just root files
-COPY . .
+# Copy only dependency-related files first
+COPY package.json package-lock.json turbo.json tsconfig.json ./
 
-# Install deps across all workspaces
+# Install dependencies early to cache them if they haven't changed
 RUN npm install
 
-# Sanity check: Make sure Next.js exists
-RUN npm ls next
+# Copy the rest of the application code
+COPY apps ./apps
+COPY packages ./packages
 
-# Generate Prisma client
+# Can you add a script to the global package.json that does this?
 RUN npm run db:generate
+# Can you filter the build down to just one app?
+RUN npm run build
 
-# Start the user app
 CMD ["npm", "run", "start-user-app"]
